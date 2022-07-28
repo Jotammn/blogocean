@@ -14,15 +14,16 @@ class Post(db.Model):
     title = db.Column(db.String(70), nullable=False)
     body = db.Column(db.String(500))
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id')) 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
+    username = db.Column(db.String(20), nullable=False, unique=True, index=True) 
     email = db.Column(db.String(64), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     posts = db.relationship('Post', backref='author')
+
 
 db.create_all()
 
@@ -33,10 +34,10 @@ def index():
 
 @app.route("/populate")
 def populate():
-    user = User(username='Jota', email='jota@ocean.com', password_hash='a')
-    post1 = Post(title="Post 1", body="Texto do Post", author="Jota")
-    post2 = Post(title="Post 2", body="Texto do Post 2", author="Feulo")
-    db.session(user)
+    user = User(username='Jota', email="jota@ocean.com", password_hash='a')
+    post1 = Post(title="Post 1", body="Texto do Post", author=user)
+    post2 = Post(title="Post 2", body="Texto do Post 2", author=user)
+    db.session.add(user)
     db.session.add(post1)
     db.session.add(post2)
     db.session.commit()
