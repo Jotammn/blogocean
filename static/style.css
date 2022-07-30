@@ -30,3 +30,16 @@ hr{
 .post .body{
     white-space: pre-line;
 }
+.content form{
+    margin: lem auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 45%;
+}
+.content label{
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+.content input{
+    margin-bottom: 1em;
+}
